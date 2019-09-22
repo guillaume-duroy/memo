@@ -13,7 +13,7 @@
         android:id="@+id/flirt1"
         android:layout_width="wrap_content"
         android:layout_height="22dp"
-        android:text="You're extremely smart !"
+        android:text="You're extremely smart and sexy!"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.787"
