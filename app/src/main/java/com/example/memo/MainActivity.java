@@ -9,6 +9,7 @@ import com.google.android.material.snackbar.Snackbar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,26 +19,57 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
+    int defi;
     public static final String EXTRA_MESSAGE = "MainActivity.MESSAGE";
     public static int count;
 
     @Override
+    protected void onPause() {
+        super.onPause();
+        Log.d("main","onPause");
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.d("main","onStop");
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.d("main","onStart");
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d("main","onCreate");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        defi=1;
         count = 0;
 
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        View.OnClickListener listener = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+
+                if (defi < 4) {
+                    defi++;
+                }
+                else {
+                    defi = 1;
+                }
+                Snackbar.make(view, "The global variable is: "+defi, Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
-        });
+        };
+
+        FloatingActionButton fab = findViewById(R.id.fab);
+        fab.setOnClickListener(listener);
 
         FloatingActionButton fab2 = findViewById(R.id.fab2);
         fab2.setOnClickListener(new View.OnClickListener() {
@@ -56,6 +88,7 @@ public class MainActivity extends AppCompatActivity {
                 // add <key,value> pair into Intent
                 intent.putExtra("Message",message);
                 intent.putExtra(EXTRA_MESSAGE,1);
+                intent.putExtra("Message2",message);
 
                 startActivity(intent);
             }
@@ -65,19 +98,6 @@ public class MainActivity extends AppCompatActivity {
         fab3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                // creation of Intent ('intention de passer à une autre activité)
-                // first argument is Context (normally just 'this' but since we
-                // are in a new function creator we need to specify 'ActivityName.this'
-                // second argument is the class of the next activity
-                Intent intent = new Intent(MainActivity.this, DisplayActivity.class);
-
-                EditText editText = (EditText) findViewById(R.id.editText);
-                String message = editText.getText().toString();
-
-                // add <key,value> pair into Intent
-                intent.putExtra("Message",message);
-                intent.putExtra(EXTRA_MESSAGE,2);
 
                 TextView textView;
 //                switch (count)
@@ -109,10 +129,59 @@ public class MainActivity extends AppCompatActivity {
                 }
                 else
                 {
-                    Toast.makeText(MainActivity.this,"Alix is the most beautiful <3", Toast.LENGTH_LONG).show();
+                    Toast.makeText(MainActivity.this,"Guillaume is the most beautiful <3", Toast.LENGTH_LONG).show();
                 }
             }
         });
+
+        FloatingActionButton fab4 = findViewById(R.id.fab4);
+        fab4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                // creation of Intent ('intention de passer à une autre activité)
+                // first argument is Context (normally just 'this' but since we
+                // are in a new function creator we need to specify 'ActivityName.this'
+                // second argument is the class of the next activity
+                Intent intent = new Intent(MainActivity.this, DisplayActivity.class);
+
+                TextView textView;
+
+                textView = findViewById(getResources().getIdentifier(
+                        "flirt" + (defi),
+                        "id",
+                        getPackageName()));
+                if (textView != null)
+                {
+                    intent.putExtra("Message",textView.getText().toString());
+                    intent.putExtra(EXTRA_MESSAGE,1);
+                    //textView = findViewById(R.id.flirt1);
+                }
+                else
+                {
+                    Toast.makeText(MainActivity.this,"Game over", Toast.LENGTH_LONG).show();
+                    intent.putExtra("Message",textView.getText().toString());
+                    intent.putExtra(EXTRA_MESSAGE,1);
+                }
+
+
+
+
+                //textView = findViewById(R.id.flirt1);
+
+                // EditText editText = (EditText) findViewById(R.id.editText);
+                // String message = editText.getText().toString();
+
+                // add <key,value> pair into Intent
+                //intent.putExtra("Message",textView.getText().toString());
+                //intent.putExtra(EXTRA_MESSAGE,1);
+               // intent.putExtra("Message2",message);
+
+                startActivity(intent);
+            }
+        });
+
+
     }
 
     @Override

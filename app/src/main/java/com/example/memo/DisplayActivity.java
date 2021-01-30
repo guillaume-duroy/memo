@@ -12,11 +12,13 @@ import android.widget.TextView;
 
 public class DisplayActivity extends AppCompatActivity {
 
+    Intent intent;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Intent intent = getIntent();
+        intent = getIntent();
         String message = intent.getStringExtra("Message");
         int viewType = intent.getIntExtra(MainActivity.EXTRA_MESSAGE, 0);
 
@@ -28,4 +30,11 @@ public class DisplayActivity extends AppCompatActivity {
         TextView textView = findViewById(R.id.textView2);
         textView.setText(message);
     }
+
+    protected void dosomething() {
+
+        String message = intent.getStringExtra("Message2");
+
+    }
+
 }
